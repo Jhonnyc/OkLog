@@ -7,12 +7,14 @@ public class LogConfiguration {
 	private String mLogFileName;
 	private TimeFormat mTimeFormat;
 	private LogLevel mLogLevel;
+	private FilePolicy mFilePolicy;
 
 	public LogConfiguration() {
 		mSendUsingEmail = false;
 		mLogFileName = "OkLog.log";
 		mTimeFormat = TimeFormat.DD_MM_YYYY__HH_mm_ss_SSS;
 		mLogLevel = LogLevel.VERBOSE;
+		mFilePolicy = FilePolicy.WRITE_ALL;
 	}
 
 	public TimeFormat getTimeFormat() {
@@ -23,8 +25,16 @@ public class LogConfiguration {
 		return mSendUsingEmail;
 	}
 
-	public String getmLogFileName() {
+	public String getLogFileName() {
 		return mLogFileName;
+	}
+	
+	public LogLevel getLogLevel() {
+		return mLogLevel;
+	}
+	
+	public FilePolicy getFilePolicy() {
+		return mFilePolicy;
 	}
 	
 	public void setTimeFormat(TimeFormat timeFormat) {
@@ -39,4 +49,11 @@ public class LogConfiguration {
 		mLogFileName = logFileName;
 	}
 	
+	public void setLogLevel(LogLevel logLevel) {
+		mLogLevel = logLevel;
+	}
+	
+	public void setLogLevel(FilePolicy filePolicy) {
+		mFilePolicy = filePolicy;
+	}
 }
