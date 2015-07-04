@@ -11,6 +11,7 @@ public class Log {
 	private Throwable mException;
 	private boolean mPrintStackTrace;
 	private boolean mHasClass = false;
+	private boolean mHasMessage = false;
 	private long mEpochTime;
 	private String mFormattedDate;
 	private String mStackTrace;
@@ -27,6 +28,7 @@ public class Log {
 			}
 		}
 		if(msg != null && msg.trim().length() > 0) {
+			mHasMessage = true;
 			mLogMessage = msg;
 		}
 	}
@@ -64,6 +66,9 @@ public class Log {
 			line += String.format(" %s @ %s #", mPackageName, mClassName);
 		} else {
 			line += String.format(" %s #", mTag);
+		}
+		if(mHasMessage) {
+			line += String.format(" %s #", mLogMessage);
 		}
 		if(mPrintStackTrace) {
 			line += String.format(" %s #", mStackTrace);
