@@ -9,7 +9,7 @@ public class Utils {
 
 	public static String getStringDateFromEpochTime(long epochTime) {
 		Date date = new Date(epochTime);
-		SimpleDateFormat formatter = new SimpleDateFormat(OkLog.Configuration.getTimeFormat());
+		SimpleDateFormat formatter = new SimpleDateFormat(OkLog.Configuration.getTimeFormat().toString());
 		String formattedTime = formatter.format(date);
 		return formattedTime;
 	}
@@ -23,4 +23,6 @@ public class Utils {
 
 		return stringBuilder.toString();
 	}
+	
+	
 }

@@ -9,14 +9,18 @@ public class Log {
 	private String mPackageName;
 	private Throwable mException;
 	private boolean mPrintStackTrace;
+	private boolean mHasClass = false;
 	private long mEpochTime;
 	private String mFormattedDate;
 	private String mStackTrace;
 	
 	public Log(LogLevel level, Class<?> clazz, Throwable exception, boolean printStackTrace) {
 		mLogLevel = level;
-		mClassName = clazz.getSimpleName();
-		mPackageName = clazz.getPackage().getName();
+		if(clazz != null) {
+			mClassName = clazz.getSimpleName();
+			mPackageName = clazz.getPackage().getName();
+			mHasClass = true;
+		}
 		mException = exception;
 		mPrintStackTrace = printStackTrace;
 		mEpochTime = System.currentTimeMillis();
@@ -28,8 +32,11 @@ public class Log {
 	
 	public Log(LogLevel level, Object object, Throwable exception, boolean printStackTrace) {
 		mLogLevel = level;
-		mClassName = object.getClass().getSimpleName();
-		mPackageName = object.getClass().getPackage().getName();
+		if(object != null) {
+			mClassName = object.getClass().getSimpleName();
+			mPackageName = object.getClass().getPackage().getName();
+			mHasClass = true;
+		}
 		mEpochTime = System.currentTimeMillis();
 		mFormattedDate = Utils.getStringDateFromEpochTime(mEpochTime);
 		mException = exception;
@@ -53,7 +60,17 @@ public class Log {
 	
 	@Override
 	public String toString() {
-		return null;
+		String line = mLogLevel.toString() + " # ";
+		line += String.format("%s #", mFormattedDate);
+		if(mHasClass) {
+			line += String.format(" %s @ %s #", mPackageName, mClassName);
+		} else {
+			line += String.format(" %s #", mTag);
+		}
+		if(mPrintStackTrace) {
+			line += String.format(" %s #", mStackTrace);
+		}
+		return line;
 	}
 
 }
