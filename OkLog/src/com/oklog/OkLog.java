@@ -16,6 +16,7 @@ public class OkLog {
 	// Class private fields
 	private Context mContext;
 	private static OkLog mInstance;
+	private static boolean mInitiated = false;
 	
 	// Class public fields
 	public static LogConfiguration Configuration = new LogConfiguration();
@@ -25,6 +26,7 @@ public class OkLog {
 	}
 	
 	public synchronized static void initialize(Context context) {
+		mInitiated = true;
 		mInstance = new OkLog(context);
 	}
 	
@@ -38,6 +40,47 @@ public class OkLog {
 	
 	public void setConfiguration(LogConfiguration configuration) {
 		Configuration = configuration;
+	}
+	
+	/**********************************
+	***********************************
+	********* Logging Methods *********
+	***********************************
+	***********************************/
+	
+	public static void 	v() throws NullPointerException {
+		if(!mInitiated) {
+			throw new NullPointerException("The class has never been initialized. " +
+					"Use initialize(context) first to create a new instance");
+		}
+	}
+	
+	public static void 	d() throws NullPointerException {
+		if(!mInitiated) {	
+			throw new NullPointerException("The class has never been initialized. " +
+					"Use initialize(context) first to create a new instance");
+		}
+	}
+	
+	public static void 	i() throws NullPointerException {
+		if(!mInitiated) {	
+			throw new NullPointerException("The class has never been initialized. " +
+					"Use initialize(context) first to create a new instance");
+		}	
+	}
+	
+	public static void 	w() throws NullPointerException {
+		if(!mInitiated) {	
+			throw new NullPointerException("The class has never been initialized. " +
+					"Use initialize(context) first to create a new instance");
+		}	
+	}
+	
+	public static void 	e() throws NullPointerException {
+		if(!mInitiated) {	
+			throw new NullPointerException("The class has never been initialized. " +
+					"Use initialize(context) first to create a new instance");
+		}		
 	}
 	
 	/**********************************
@@ -81,7 +124,10 @@ public class OkLog {
 		return uri;
 	}
 	
-	/* Checks if external storage is available for read and write */
+	/**
+	 * Checks if external storage is available for read and write 
+	 * @return True in case the external storage has a write permission False otherwise
+	 */
 	public boolean isExternalStorageWritable() {
 	    String state = Environment.getExternalStorageState();
 	    if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -90,7 +136,10 @@ public class OkLog {
 	    return false;
 	}
 
-	/* Checks if external storage is available to at least read */
+	/**
+	 * Checks if external storage is available to at least read 
+	 * @return True in case the external storage has a read permission False otherwise
+	 */
 	public boolean isExternalStorageReadable() {
 	    String state = Environment.getExternalStorageState();
 	    if (Environment.MEDIA_MOUNTED.equals(state) ||

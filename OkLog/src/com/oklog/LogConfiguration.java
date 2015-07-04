@@ -6,11 +6,13 @@ public class LogConfiguration {
 	private boolean mSendUsingEmail;
 	private String mLogFileName;
 	private TimeFormat mTimeFormat;
+	private LogLevel mLogLevel;
 
 	public LogConfiguration() {
 		mSendUsingEmail = false;
 		mLogFileName = "OkLog.log";
 		mTimeFormat = TimeFormat.DD_MM_YYYY__HH_mm_ss_SSS;
+		mLogLevel = LogLevel.VERBOSE;
 	}
 
 	public TimeFormat getTimeFormat() {

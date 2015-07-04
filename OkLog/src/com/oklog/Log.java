@@ -7,6 +7,7 @@ public class Log {
 	private String mTag;
 	private String mClassName;
 	private String mPackageName;
+	private String mLogMessage;
 	private Throwable mException;
 	private boolean mPrintStackTrace;
 	private boolean mHasClass = false;
@@ -14,47 +15,44 @@ public class Log {
 	private String mFormattedDate;
 	private String mStackTrace;
 	
-	public Log(LogLevel level, Class<?> clazz, Throwable exception, boolean printStackTrace) {
+	private Log(LogLevel level, Throwable exception, String msg, boolean printStackTrace) {
 		mLogLevel = level;
+		mEpochTime = System.currentTimeMillis();
+		mFormattedDate = Utils.getStringDateFromEpochTime(mEpochTime);
+		if(exception != null) {
+			mException = exception;
+			mPrintStackTrace = printStackTrace;
+			if(mPrintStackTrace) {
+				mStackTrace = Utils.getFormattedStackTraceForException(mException);
+			}
+		}
+		if(msg != null && msg.trim().length() > 0) {
+			mLogMessage = msg;
+		}
+	}
+	
+	public Log(LogLevel level, Class<?> clazz, String msg, Throwable exception, boolean printStackTrace) {
+		this(level, exception, msg, printStackTrace);
 		if(clazz != null) {
 			mClassName = clazz.getSimpleName();
 			mPackageName = clazz.getPackage().getName();
 			mHasClass = true;
 		}
-		mException = exception;
-		mPrintStackTrace = printStackTrace;
-		mEpochTime = System.currentTimeMillis();
-		mFormattedDate = Utils.getStringDateFromEpochTime(mEpochTime);
-		if(mPrintStackTrace) {
-			mStackTrace = Utils.getFormattedStackTraceForException(mException);
-		}
 	}
 	
-	public Log(LogLevel level, Object object, Throwable exception, boolean printStackTrace) {
-		mLogLevel = level;
+	public Log(LogLevel level, Object object, String msg, Throwable exception, boolean printStackTrace) {
+		this(level, exception, msg, printStackTrace);
 		if(object != null) {
 			mClassName = object.getClass().getSimpleName();
 			mPackageName = object.getClass().getPackage().getName();
 			mHasClass = true;
 		}
-		mEpochTime = System.currentTimeMillis();
-		mFormattedDate = Utils.getStringDateFromEpochTime(mEpochTime);
-		mException = exception;
-		mPrintStackTrace = printStackTrace;
-		if(mPrintStackTrace) {
-			mStackTrace = Utils.getFormattedStackTraceForException(mException);
-		}
 	}
 	
-	public Log(LogLevel level, String tag, Throwable exception, boolean printStackTrace) {
-		mLogLevel = level;
-		mTag = tag;
-		mEpochTime = System.currentTimeMillis();
-		mFormattedDate = Utils.getStringDateFromEpochTime(mEpochTime);
-		mException = exception;
-		mPrintStackTrace = printStackTrace;
-		if(mPrintStackTrace) {
-			mStackTrace = Utils.getFormattedStackTraceForException(mException);
+	public Log(LogLevel level, String tag, String msg, Throwable exception, boolean printStackTrace) {
+		this(level, exception, msg, printStackTrace);
+		if(tag != null && tag.trim().length() > 0) {
+			mTag = tag;
 		}
 	}
 	
