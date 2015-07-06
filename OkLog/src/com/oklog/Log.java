@@ -16,7 +16,7 @@ public class Log {
 	private String mFormattedDate;
 	private String mStackTrace;
 	
-	private Log(LogLevel level, Throwable exception, String msg, boolean printStackTrace) {
+	public Log(LogLevel level, Throwable exception, String msg, boolean printStackTrace) {
 		mLogLevel = level;
 		mEpochTime = System.currentTimeMillis();
 		mFormattedDate = Utils.getStringDateFromEpochTime(mEpochTime);

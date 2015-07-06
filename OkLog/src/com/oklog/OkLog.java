@@ -48,39 +48,44 @@ public class OkLog {
 	***********************************
 	***********************************/
 	
-	public static void 	v() throws NullPointerException {
+	public static <T> void v(String tag, String msg, T... args) throws NullPointerException {
 		if(!mInitiated) {
 			throw new NullPointerException("The class has never been initialized. " +
 					"Use initialize(context) first to create a new instance");
 		}
+		Log log = new Log(LogLevel.VERBOSE, null, String.format(msg, args), Configuration.shouldPrintStackTrace());
 	}
 	
-	public static void 	d() throws NullPointerException {
+	public static <T> void d(String tag, String msg, T... args) throws NullPointerException {
 		if(!mInitiated) {	
 			throw new NullPointerException("The class has never been initialized. " +
 					"Use initialize(context) first to create a new instance");
 		}
+		Log log = new Log(LogLevel.DEBUG, null, String.format(msg, args), Configuration.shouldPrintStackTrace());
 	}
 	
-	public static void 	i() throws NullPointerException {
+	public static <T> void i(String tag, String msg, T... args) throws NullPointerException {
 		if(!mInitiated) {	
 			throw new NullPointerException("The class has never been initialized. " +
 					"Use initialize(context) first to create a new instance");
 		}	
+		Log log = new Log(LogLevel.INFO, null, String.format(msg, args), Configuration.shouldPrintStackTrace());
 	}
 	
-	public static void 	w() throws NullPointerException {
+	public static <T> void w(String tag, String msg, T... args) throws NullPointerException {
 		if(!mInitiated) {	
 			throw new NullPointerException("The class has never been initialized. " +
 					"Use initialize(context) first to create a new instance");
 		}	
+		Log log = new Log(LogLevel.WARNING, null, String.format(msg, args), Configuration.shouldPrintStackTrace());
 	}
 	
-	public static void 	e() throws NullPointerException {
+	public static <T> void e(String tag, String msg, T... args) throws NullPointerException {
 		if(!mInitiated) {	
 			throw new NullPointerException("The class has never been initialized. " +
 					"Use initialize(context) first to create a new instance");
-		}		
+		}	
+		Log log = new Log(LogLevel.ERROR, null, String.format(msg, args), Configuration.shouldPrintStackTrace());
 	}
 	
 	/**********************************

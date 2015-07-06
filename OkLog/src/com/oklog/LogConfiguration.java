@@ -3,6 +3,7 @@ package com.oklog;
 public class LogConfiguration {
 
 	// Class Variables
+	private boolean mPrintStackTrace;
 	private boolean mSendUsingEmail;
 	private String mLogFileName;
 	private TimeFormat mTimeFormat;
@@ -10,6 +11,7 @@ public class LogConfiguration {
 	private FilePolicy mFilePolicy;
 
 	public LogConfiguration() {
+		mPrintStackTrace = false;
 		mSendUsingEmail = false;
 		mLogFileName = "OkLog.log";
 		mTimeFormat = TimeFormat.DD_MM_YYYY__HH_mm_ss_SSS;
@@ -21,6 +23,10 @@ public class LogConfiguration {
 		return mTimeFormat;
 	}
 
+	public boolean shouldPrintStackTrace() {
+		return mPrintStackTrace;
+	}
+	
 	public boolean isSendEmail() {
 		return mSendUsingEmail;
 	}
@@ -39,6 +45,10 @@ public class LogConfiguration {
 	
 	public void setTimeFormat(TimeFormat timeFormat) {
 		mTimeFormat = timeFormat;
+	}
+	
+	public void setPrintStackTrace(boolean printStackTrace) {
+		mPrintStackTrace = printStackTrace;
 	}
 
 	public void setSendUsingEmail(boolean sendUsingEmail) {
