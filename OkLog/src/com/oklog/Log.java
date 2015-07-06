@@ -16,7 +16,7 @@ public class Log {
 	private String mFormattedDate;
 	private String mStackTrace;
 	
-	public Log(LogLevel level, Throwable exception, String msg, boolean printStackTrace) {
+	public Log(LogLevel level, String msg, Throwable exception, boolean printStackTrace) {
 		mLogLevel = level;
 		mEpochTime = System.currentTimeMillis();
 		mFormattedDate = Utils.getStringDateFromEpochTime(mEpochTime);
@@ -34,7 +34,7 @@ public class Log {
 	}
 	
 	public Log(LogLevel level, Class<?> clazz, String msg, Throwable exception, boolean printStackTrace) {
-		this(level, exception, msg, printStackTrace);
+		this(level, msg, exception, printStackTrace);
 		if(clazz != null) {
 			mClassName = clazz.getSimpleName();
 			mPackageName = clazz.getPackage().getName();
@@ -43,7 +43,7 @@ public class Log {
 	}
 	
 	public Log(LogLevel level, Object object, String msg, Throwable exception, boolean printStackTrace) {
-		this(level, exception, msg, printStackTrace);
+		this(level, msg, exception, printStackTrace);
 		if(object != null) {
 			mClassName = object.getClass().getSimpleName();
 			mPackageName = object.getClass().getPackage().getName();
@@ -52,7 +52,7 @@ public class Log {
 	}
 	
 	public Log(LogLevel level, String tag, String msg, Throwable exception, boolean printStackTrace) {
-		this(level, exception, msg, printStackTrace);
+		this(level, msg, exception, printStackTrace);
 		if(tag != null && tag.trim().length() > 0) {
 			mTag = tag;
 		}

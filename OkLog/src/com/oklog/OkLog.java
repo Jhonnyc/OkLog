@@ -47,45 +47,105 @@ public class OkLog {
 	********* Logging Methods *********
 	***********************************
 	***********************************/
-	
+
 	public static <T> void v(String tag, String msg, T... args) throws NullPointerException {
-		if(!mInitiated) {
-			throw new NullPointerException("The class has never been initialized. " +
-					"Use initialize(context) first to create a new instance");
-		}
-		Log log = new Log(LogLevel.VERBOSE, null, String.format(msg, args), Configuration.shouldPrintStackTrace());
+		logByTag(LogLevel.VERBOSE, tag, msg, args);
 	}
 	
 	public static <T> void d(String tag, String msg, T... args) throws NullPointerException {
-		if(!mInitiated) {	
-			throw new NullPointerException("The class has never been initialized. " +
-					"Use initialize(context) first to create a new instance");
-		}
-		Log log = new Log(LogLevel.DEBUG, null, String.format(msg, args), Configuration.shouldPrintStackTrace());
+		logByTag(LogLevel.DEBUG, tag, msg, args);
 	}
 	
 	public static <T> void i(String tag, String msg, T... args) throws NullPointerException {
-		if(!mInitiated) {	
-			throw new NullPointerException("The class has never been initialized. " +
-					"Use initialize(context) first to create a new instance");
-		}	
-		Log log = new Log(LogLevel.INFO, null, String.format(msg, args), Configuration.shouldPrintStackTrace());
+		logByTag(LogLevel.INFO, tag, msg, args);	
 	}
 	
 	public static <T> void w(String tag, String msg, T... args) throws NullPointerException {
-		if(!mInitiated) {	
-			throw new NullPointerException("The class has never been initialized. " +
-					"Use initialize(context) first to create a new instance");
-		}	
-		Log log = new Log(LogLevel.WARNING, null, String.format(msg, args), Configuration.shouldPrintStackTrace());
+		logByTag(LogLevel.WARNING, tag, msg, args);
 	}
 	
 	public static <T> void e(String tag, String msg, T... args) throws NullPointerException {
-		if(!mInitiated) {	
-			throw new NullPointerException("The class has never been initialized. " +
-					"Use initialize(context) first to create a new instance");
-		}	
-		Log log = new Log(LogLevel.ERROR, null, String.format(msg, args), Configuration.shouldPrintStackTrace());
+		logByTag(LogLevel.ERROR, tag, msg, args);	
+	}
+
+	public static <T> void v(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
+		logByClass(LogLevel.VERBOSE, clazz, msg, exception);
+	}
+	
+	public static <T> void d(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
+		logByClass(LogLevel.DEBUG, clazz, msg, exception);
+	}
+	
+	public static <T> void i(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
+		logByClass(LogLevel.INFO, clazz, msg, exception);
+	}
+	
+	public static <T> void w(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
+		logByClass(LogLevel.WARNING, clazz, msg, exception);
+	}
+	
+	public static <T> void e(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
+		logByClass(LogLevel.ERROR, clazz, msg, exception);	
+	}
+	
+	public static <T> void v(LogLevel level, Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
+		logByClass(LogLevel.VERBOSE, clazz, String.format(msg, args), exception);
+	}
+	
+	public static <T> void d(LogLevel level, Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
+		logByClass(LogLevel.DEBUG, clazz, String.format(msg, args), exception);
+	}
+	
+	public static <T> void i(LogLevel level, Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
+		logByClass(LogLevel.INFO, clazz, String.format(msg, args), exception);
+	}
+	
+	public static <T> void w(LogLevel level, Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
+		logByClass(LogLevel.WARNING, clazz, String.format(msg, args), exception);
+	}
+	
+	public static <T> void e(LogLevel level, Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
+		logByClass(LogLevel.ERROR, clazz, String.format(msg, args), exception);	
+	}
+	
+	public static <T> void v(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
+		logByObject(LogLevel.VERBOSE, object, msg, exception);
+	}
+	
+	public static <T> void d(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
+		logByObject(LogLevel.DEBUG, object, msg, exception);
+	}
+	
+	public static <T> void i(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
+		logByObject(LogLevel.INFO, object, msg, exception);
+	}
+	
+	public static <T> void w(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
+		logByObject(LogLevel.WARNING, object, msg, exception);
+	}
+	
+	public static <T> void e(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
+		logByObject(LogLevel.ERROR, object, msg, exception);	
+	}
+	
+	public static <T> void v(LogLevel level, Object object, Exception exception, String msg, T... args) throws NullPointerException {
+		logByObject(LogLevel.VERBOSE, object, String.format(msg, args), exception);
+	}
+	
+	public static <T> void d(LogLevel level, Object object, Exception exception, String msg, T... args) throws NullPointerException {
+		logByObject(LogLevel.DEBUG, object, String.format(msg, args), exception);
+	}
+	
+	public static <T> void i(LogLevel level, Object object, Exception exception, String msg, T... args) throws NullPointerException {
+		logByObject(LogLevel.INFO, object, String.format(msg, args), exception);
+	}
+	
+	public static <T> void w(LogLevel level, Object object, Exception exception, String msg, T... args) throws NullPointerException {
+		logByObject(LogLevel.WARNING, object, String.format(msg, args), exception);
+	}
+	
+	public static <T> void e(LogLevel level, Object object, Exception exception, String msg, T... args) throws NullPointerException {
+		logByObject(LogLevel.ERROR, object, String.format(msg, args), exception);	
 	}
 	
 	/**********************************
@@ -93,6 +153,30 @@ public class OkLog {
 	********* Private Methods *********
 	***********************************
 	***********************************/
+	
+	private static <T> void logByTag(LogLevel level, String tag, String msg, T... args) throws NullPointerException {
+		if(!mInitiated) {
+			throw new NullPointerException("The class has never been initialized. " +
+					"Use initialize(context) first to create a new instance");
+		}
+		Log log = new Log(level, String.format(msg, args), null, Configuration.shouldPrintStackTrace());
+	}
+	
+	private static <T> void logByClass(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
+		if(!mInitiated) {
+			throw new NullPointerException("The class has never been initialized. " +
+					"Use initialize(context) first to create a new instance");
+		}
+		Log log = new Log(level, clazz, msg, exception, Configuration.shouldPrintStackTrace());
+	}
+	
+	private static <T> void logByObject(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
+		if(!mInitiated) {
+			throw new NullPointerException("The class has never been initialized. " +
+					"Use initialize(context) first to create a new instance");
+		}
+		Log log = new Log(level, object, msg, exception, Configuration.shouldPrintStackTrace());
+	}
 	
 	public void writeFile(String fileName, String content) {
 		FileOutputStream outputStream = null;
