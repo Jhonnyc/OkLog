@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 
 public class OkLog {
 
@@ -17,12 +18,14 @@ public class OkLog {
 	private Context mContext;
 	private static OkLog mInstance;
 	private static boolean mInitiated = false;
+	private RingQueue mLogs;
 	
 	// Class public fields
 	public static LogConfiguration Configuration = new LogConfiguration();
 	
 	private OkLog(Context context) {
 		mContext = context;
+		mLogs = new RingQueue(Configuration.getSize());
 	}
 	
 	public synchronized static void initialize(Context context) {
@@ -40,6 +43,7 @@ public class OkLog {
 	
 	public void setConfiguration(LogConfiguration configuration) {
 		Configuration = configuration;
+		mLogs = new RingQueue(Configuration.getSize());
 	}
 	
 	/**********************************
@@ -159,7 +163,8 @@ public class OkLog {
 			throw new NullPointerException("The class has never been initialized. " +
 					"Use initialize(context) first to create a new instance");
 		}
-		Log log = new Log(level, String.format(msg, args), null, Configuration.shouldPrintStackTrace());
+		LogLine log = new LogLine(level, String.format(msg, args), null, Configuration.getPrintStackTrace());
+		logToLogcat(level, tag, String.format(msg, args));
 	}
 	
 	private static <T> void logByClass(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
@@ -167,7 +172,8 @@ public class OkLog {
 			throw new NullPointerException("The class has never been initialized. " +
 					"Use initialize(context) first to create a new instance");
 		}
-		Log log = new Log(level, clazz, msg, exception, Configuration.shouldPrintStackTrace());
+		LogLine log = new LogLine(level, clazz, msg, exception, Configuration.getPrintStackTrace());
+		logToLogcat(level, clazz.getSimpleName(), msg);
 	}
 	
 	private static <T> void logByObject(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
@@ -175,7 +181,31 @@ public class OkLog {
 			throw new NullPointerException("The class has never been initialized. " +
 					"Use initialize(context) first to create a new instance");
 		}
-		Log log = new Log(level, object, msg, exception, Configuration.shouldPrintStackTrace());
+		LogLine log = new LogLine(level, object, msg, exception, Configuration.getPrintStackTrace());
+		logToLogcat(level, object.getClass().getSimpleName(), msg);
+	}
+	
+	private static void logToLogcat(LogLevel level, String tag, String msg) {
+		switch (level) {
+		case DEBUG:
+			Log.d(tag, msg);
+			break;
+		case ERROR:
+			Log.e(tag, msg);
+			break;
+		case INFO:
+			Log.i(tag, msg);
+			break;
+		case VERBOSE:
+			Log.v(tag, msg);
+			break;
+		case WARNING:
+			Log.w(tag, msg);
+			break;
+		default:
+			Log.e(tag, msg);
+			break;
+		}
 	}
 	
 	public void writeFile(String fileName, String content) {
