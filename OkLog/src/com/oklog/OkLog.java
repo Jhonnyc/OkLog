@@ -72,83 +72,83 @@ public class OkLog {
 		logByTag(LogLevel.ERROR, tag, msg, args);	
 	}
 
-	public static <T> void v(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
+	public static <T> void v(Class<?> clazz, String msg, Exception exception) throws NullPointerException {
 		logByClass(LogLevel.VERBOSE, clazz, msg, exception);
 	}
 	
-	public static <T> void d(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
+	public static <T> void d(Class<?> clazz, String msg, Exception exception) throws NullPointerException {
 		logByClass(LogLevel.DEBUG, clazz, msg, exception);
 	}
 	
-	public static <T> void i(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
+	public static <T> void i(Class<?> clazz, String msg, Exception exception) throws NullPointerException {
 		logByClass(LogLevel.INFO, clazz, msg, exception);
 	}
 	
-	public static <T> void w(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
+	public static <T> void w(Class<?> clazz, String msg, Exception exception) throws NullPointerException {
 		logByClass(LogLevel.WARNING, clazz, msg, exception);
 	}
 	
-	public static <T> void e(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
+	public static <T> void e(Class<?> clazz, String msg, Exception exception) throws NullPointerException {
 		logByClass(LogLevel.ERROR, clazz, msg, exception);	
 	}
 	
-	public static <T> void v(LogLevel level, Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
+	public static <T> void v(Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
 		logByClass(LogLevel.VERBOSE, clazz, String.format(msg, args), exception);
 	}
 	
-	public static <T> void d(LogLevel level, Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
+	public static <T> void d(Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
 		logByClass(LogLevel.DEBUG, clazz, String.format(msg, args), exception);
 	}
 	
-	public static <T> void i(LogLevel level, Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
+	public static <T> void i(Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
 		logByClass(LogLevel.INFO, clazz, String.format(msg, args), exception);
 	}
 	
-	public static <T> void w(LogLevel level, Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
+	public static <T> void w(Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
 		logByClass(LogLevel.WARNING, clazz, String.format(msg, args), exception);
 	}
 	
-	public static <T> void e(LogLevel level, Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
+	public static <T> void e(Class<?> clazz, Exception exception, String msg, T... args) throws NullPointerException {
 		logByClass(LogLevel.ERROR, clazz, String.format(msg, args), exception);	
 	}
 	
-	public static <T> void v(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
+	public static <T> void v(Object object, String msg, Exception exception) throws NullPointerException {
 		logByObject(LogLevel.VERBOSE, object, msg, exception);
 	}
 	
-	public static <T> void d(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
+	public static <T> void d(Object object, String msg, Exception exception) throws NullPointerException {
 		logByObject(LogLevel.DEBUG, object, msg, exception);
 	}
 	
-	public static <T> void i(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
+	public static <T> void i(Object object, String msg, Exception exception) throws NullPointerException {
 		logByObject(LogLevel.INFO, object, msg, exception);
 	}
 	
-	public static <T> void w(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
+	public static <T> void w(Object object, String msg, Exception exception) throws NullPointerException {
 		logByObject(LogLevel.WARNING, object, msg, exception);
 	}
 	
-	public static <T> void e(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
+	public static <T> void e(Object object, String msg, Exception exception) throws NullPointerException {
 		logByObject(LogLevel.ERROR, object, msg, exception);	
 	}
 	
-	public static <T> void v(LogLevel level, Object object, Exception exception, String msg, T... args) throws NullPointerException {
+	public static <T> void v(Object object, Exception exception, String msg, T... args) throws NullPointerException {
 		logByObject(LogLevel.VERBOSE, object, String.format(msg, args), exception);
 	}
 	
-	public static <T> void d(LogLevel level, Object object, Exception exception, String msg, T... args) throws NullPointerException {
+	public static <T> void d(Object object, Exception exception, String msg, T... args) throws NullPointerException {
 		logByObject(LogLevel.DEBUG, object, String.format(msg, args), exception);
 	}
 	
-	public static <T> void i(LogLevel level, Object object, Exception exception, String msg, T... args) throws NullPointerException {
+	public static <T> void i(Object object, Exception exception, String msg, T... args) throws NullPointerException {
 		logByObject(LogLevel.INFO, object, String.format(msg, args), exception);
 	}
 	
-	public static <T> void w(LogLevel level, Object object, Exception exception, String msg, T... args) throws NullPointerException {
+	public static <T> void w(Object object, Exception exception, String msg, T... args) throws NullPointerException {
 		logByObject(LogLevel.WARNING, object, String.format(msg, args), exception);
 	}
 	
-	public static <T> void e(LogLevel level, Object object, Exception exception, String msg, T... args) throws NullPointerException {
+	public static <T> void e(Object object, Exception exception, String msg, T... args) throws NullPointerException {
 		logByObject(LogLevel.ERROR, object, String.format(msg, args), exception);	
 	}
 	

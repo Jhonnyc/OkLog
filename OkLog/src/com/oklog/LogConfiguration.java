@@ -13,7 +13,7 @@ public class LogConfiguration {
 	private WritePolicy mWritePolicy;
 
 	public LogConfiguration() {
-		mPrintStackTrace = false;
+		mPrintStackTrace = true;
 		mSendUsingEmail = false;
 		mSize = 1000;
 		mLogFileName = "OkLog.log";
