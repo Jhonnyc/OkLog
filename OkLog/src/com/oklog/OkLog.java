@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
@@ -19,6 +20,7 @@ public class OkLog {
 	private static OkLog mInstance;
 	private static boolean mInitiated = false;
 	private RingQueue mLogs;
+	private static File mLogFile;
 	
 	// Class public fields
 	public static LogConfiguration Configuration = new LogConfiguration();
@@ -26,6 +28,7 @@ public class OkLog {
 	private OkLog(Context context) {
 		mContext = context;
 		mLogs = new RingQueue(Configuration.getSize());
+		mLogFile = getLogFile(Configuration.getLogFileName(), mContext);
 	}
 	
 	public synchronized static void initialize(Context context) {
@@ -165,6 +168,7 @@ public class OkLog {
 		}
 		LogLine log = new LogLine(level, String.format(msg, args), null, Configuration.getPrintStackTrace());
 		logToLogcat(level, tag, String.format(msg, args));
+		writeOrAddToQueue(log);
 	}
 	
 	private static <T> void logByClass(LogLevel level, Class<?> clazz, String msg, Exception exception) throws NullPointerException {
@@ -174,6 +178,7 @@ public class OkLog {
 		}
 		LogLine log = new LogLine(level, clazz, msg, exception, Configuration.getPrintStackTrace());
 		logToLogcat(level, clazz.getSimpleName(), msg);
+		writeOrAddToQueue(log);
 	}
 	
 	private static <T> void logByObject(LogLevel level, Object object, String msg, Exception exception) throws NullPointerException {
@@ -183,6 +188,7 @@ public class OkLog {
 		}
 		LogLine log = new LogLine(level, object, msg, exception, Configuration.getPrintStackTrace());
 		logToLogcat(level, object.getClass().getSimpleName(), msg);
+		writeOrAddToQueue(log);
 	}
 	
 	private static void logToLogcat(LogLevel level, String tag, String msg) {
@@ -208,6 +214,22 @@ public class OkLog {
 		}
 	}
 	
+	private static void writeOrAddToQueue(final LogLine log) {
+		Thread writeTask = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+				if(Configuration.getWritePolicy().equals(WritePolicy.EVERY_LINE)) {
+					WriterThread writerThread = new WriterThread(log, mLogFile);
+					writerThread.run();
+				}
+				
+			}
+		});
+		writeTask.start();
+	}
+	
 	public void writeFile(String fileName, String content) {
 		FileOutputStream outputStream = null;
 		try {
@@ -219,27 +241,37 @@ public class OkLog {
 		}
 	}
 	
-	public File getLogFile(String fileName) {
-		String line;
+	public File getLogFile(String fileName, Context context) {
 		File file = null;
-		BufferedReader input = null;
 		try {
-		    file = new File(mContext.getFilesDir(), fileName);
-		    input = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-		    StringBuffer buffer = new StringBuffer();
-		    while ((line = input.readLine()) != null) {
-		        buffer.append(line);
-		    }
-		    input.close();
-		} catch (IOException e) {
+		    file = new File(context.getFilesDir(), fileName);
+		} catch (Exception e) {
 		    e.printStackTrace();
 		}
 		
 		return file;
 	}
 	
+	public StringBuilder readLogFileContent(File file) {
+		String line;
+		BufferedReader input = null;
+		StringBuilder fileContent = null;
+		try {
+		    input = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+		    fileContent = new StringBuilder();
+		    while ((line = input.readLine()) != null) {
+		    	fileContent.append(line);
+		    }
+		    input.close();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		
+		return fileContent;
+	}
+	
 	public Uri getLogFileUri(String fileName) {
-		Uri uri = Uri.fromFile(getLogFile(fileName));
+		Uri uri = Uri.fromFile(getLogFile(Configuration.getLogFileName(), mContext));
 		return uri;
 	}
 	
