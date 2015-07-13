@@ -12,7 +12,7 @@ public class WriterThread implements Runnable {
 	private LogLine mLog;
 	private boolean mAppendQueue = false;
 
-	public WriterThread(RingQueue ringQueue,  File logFile) {
+	public WriterThread(RingQueue ringQueue, File logFile) {
 		mRingQueue = ringQueue;
 		mLogFile = logFile;
 		mAppendQueue = true;

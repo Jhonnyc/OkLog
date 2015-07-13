@@ -1,12 +1,7 @@
 package com.oklog;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 
 import android.content.Context;
 import android.net.Uri;
@@ -250,24 +245,6 @@ public class OkLog {
 		}
 		
 		return file;
-	}
-	
-	public StringBuilder readLogFileContent(File file) {
-		String line;
-		BufferedReader input = null;
-		StringBuilder fileContent = null;
-		try {
-		    input = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-		    fileContent = new StringBuilder();
-		    while ((line = input.readLine()) != null) {
-		    	fileContent.append(line);
-		    }
-		    input.close();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-		
-		return fileContent;
 	}
 	
 	public Uri getLogFileUri(String fileName) {
