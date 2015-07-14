@@ -1,4 +1,7 @@
-package com.oklog;
+package com.oklog.entities;
+
+import com.oklog.config.LogLevel;
+import com.oklog.utils.Utils;
 
 public class LogLine {
 	

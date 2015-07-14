@@ -1,7 +1,9 @@
-package com.oklog;
+package com.oklog.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.oklog.OkLog;
 
 public class Utils {
 	

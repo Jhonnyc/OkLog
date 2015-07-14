@@ -1,4 +1,4 @@
-package com.oklog;
+package com.oklog.config;
 
 public enum WritePolicy {
 	EVERY_LINE,

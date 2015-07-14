@@ -1,4 +1,4 @@
-package com.oklog;
+package com.oklog.interfaces;
 
 public interface TaskStatusReporter {
 	

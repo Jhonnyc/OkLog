@@ -1,4 +1,4 @@
-package com.oklog;
+package com.oklog.config;
 
 import java.util.HashMap;
 import java.util.Map;

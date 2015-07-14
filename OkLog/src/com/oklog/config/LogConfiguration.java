@@ -1,4 +1,5 @@
-package com.oklog;
+package com.oklog.config;
+
 
 public class LogConfiguration {
 

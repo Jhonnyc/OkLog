@@ -1,8 +1,9 @@
-package com.oklog;
+package com.oklog.entities;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+
 
 
 public class WriterThread implements Runnable {
