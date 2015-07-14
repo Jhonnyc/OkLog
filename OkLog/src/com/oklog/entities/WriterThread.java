@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 
-
-
 public class WriterThread implements Runnable {
 
 	private RingQueue mRingQueue;
@@ -37,6 +35,7 @@ public class WriterThread implements Runnable {
 			} else {
 				content = mLog.toString();
 			}
+			writer.append(content);
 			writer.close();
 //			long end = (System.currentTimeMillis() - start) / 1000;
 //			Log.e(WriterThread.class.getSimpleName(), "Took " + end + " Sec");
