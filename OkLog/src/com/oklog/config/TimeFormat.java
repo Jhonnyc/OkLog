@@ -1,6 +1,7 @@
 package com.oklog.config;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public enum TimeFormat {
@@ -29,7 +30,7 @@ public enum TimeFormat {
 	}
 	
 	static {
-		mValues.put(MM_DD_YYYY.toString().toLowerCase(), MM_DD_YYYY);
+		mValues.put(MM_DD_YYYY.toString().toLowerCase(Locale.getDefault()), MM_DD_YYYY);
     }
 	
 	@Override
@@ -41,6 +42,6 @@ public enum TimeFormat {
 		if(name == null || name.trim().length() < 1) {
 			throw new NullPointerException("The name argument cannot be null");
 		}
-		return mValues.get(name.toLowerCase());
+		return mValues.get(name.toLowerCase(Locale.getDefault()));
 	}
 }
