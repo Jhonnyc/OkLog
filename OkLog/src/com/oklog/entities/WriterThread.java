@@ -4,26 +4,32 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 
+import com.oklog.interfaces.TaskStatusListener;
+
 public class WriterThread implements Runnable {
 
 	private RingQueue mRingQueue;
 	private File mLogFile;
 	private LogLine mLog;
 	private boolean mAppendQueue = false;
+	private TaskStatusListener mListener;
 
-	public WriterThread(RingQueue ringQueue, File logFile) {
+	public WriterThread(RingQueue ringQueue, File logFile, TaskStatusListener listener) {
 		mRingQueue = ringQueue;
 		mLogFile = logFile;
 		mAppendQueue = true;
+		mListener = listener;
 	}
 	
-	public WriterThread(LogLine log, File logFile) {
+	public WriterThread(LogLine log, File logFile, TaskStatusListener listener) {
 		mLog = log;
 		mLogFile = logFile;
+		mListener = listener;
 	}
 
 	@Override
-	public void run() {
+	public synchronized void run() {
+		android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 //		long start = System.currentTimeMillis();
 		FileWriter writer = null;
 
@@ -37,6 +43,9 @@ public class WriterThread implements Runnable {
 			}
 			writer.append(content);
 			writer.close();
+			if(mListener != null) {
+				mListener.onTaskComplete();
+			}
 //			long end = (System.currentTimeMillis() - start) / 1000;
 //			Log.e(WriterThread.class.getSimpleName(), "Took " + end + " Sec");
 		} catch (FileNotFoundException e) {
@@ -45,5 +54,4 @@ public class WriterThread implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
 }

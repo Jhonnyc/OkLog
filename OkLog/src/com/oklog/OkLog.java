@@ -8,6 +8,16 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import com.oklog.config.LogConfiguration;
+import com.oklog.config.LogLevel;
+import com.oklog.config.WritePolicy;
+import com.oklog.entities.LogLine;
+import com.oklog.entities.ReaderThread;
+import com.oklog.entities.RingQueue;
+import com.oklog.entities.RunnablesQueue;
+import com.oklog.entities.StringKeeper;
+import com.oklog.entities.WriterThread;
+
 public class OkLog {
 
 	// Class private fields
@@ -15,6 +25,8 @@ public class OkLog {
 	private static OkLog mInstance;
 	private static boolean mInitiated = false;
 	private RingQueue mLogs;
+	private StringKeeper mStringKeeper; 
+	private static RunnablesQueue mRunnablesQueue;
 	private static File mLogFile;
 	
 	// Class public fields
@@ -24,6 +36,10 @@ public class OkLog {
 		mContext = context;
 		mLogs = new RingQueue(Configuration.getSize());
 		mLogFile = getLogFile(Configuration.getLogFileName(), mContext);
+		mStringKeeper = new StringKeeper(Configuration.getSize());
+		ReaderThread reader = new ReaderThread(mLogFile, mStringKeeper, mRunnablesQueue);
+		mRunnablesQueue = new RunnablesQueue();
+		mRunnablesQueue.addTask(reader);
 	}
 	
 	public synchronized static void initialize(Context context) {
@@ -209,20 +225,11 @@ public class OkLog {
 		}
 	}
 	
-	private static void writeOrAddToQueue(final LogLine log) {
-		Thread writeTask = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-				if(Configuration.getWritePolicy().equals(WritePolicy.EVERY_LINE)) {
-					WriterThread writerThread = new WriterThread(log, mLogFile);
-					writerThread.run();
-				}
-				
-			}
-		});
-		writeTask.start();
+	private static synchronized void writeOrAddToQueue(final LogLine log) {
+		if(Configuration.getWritePolicy().equals(WritePolicy.EVERY_LINE)) {
+			WriterThread writer = new WriterThread(log, mLogFile, mRunnablesQueue);
+			mRunnablesQueue.addTask(writer);
+		}
 	}
 	
 	public void writeFile(String fileName, String content) {
@@ -237,9 +244,13 @@ public class OkLog {
 	}
 	
 	public File getLogFile(String fileName, Context context) {
+		boolean created = false;
 		File file = null;
 		try {
 		    file = new File(context.getFilesDir(), fileName);
+		    if(!file.exists()) {
+		    	created = file.createNewFile();
+		    }
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
