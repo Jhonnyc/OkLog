@@ -1,9 +1,7 @@
-package com.oklog.entities;
+package com.oklog.deprecated;
 
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.oklog.interfaces.TaskStatusListener;
 
 public class RunnablesQueue implements TaskStatusListener {
 	

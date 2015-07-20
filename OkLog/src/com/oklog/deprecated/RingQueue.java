@@ -1,4 +1,6 @@
-package com.oklog.entities;
+package com.oklog.deprecated;
+
+import com.oklog.entities.LogLine;
 
 
 public class RingQueue {

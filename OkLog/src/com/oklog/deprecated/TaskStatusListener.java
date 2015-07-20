@@ -1,4 +1,4 @@
-package com.oklog.interfaces;
+package com.oklog.deprecated;
 
 public interface TaskStatusListener {
 
