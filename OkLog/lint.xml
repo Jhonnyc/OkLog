@@ -3,6 +3,7 @@
     <issue id="DefaultLocale">
         <ignore path="src/com/oklog/LogLevel.java" />
         <ignore path="src/com/oklog/TimeFormat.java" />
+        <ignore path="src/com/oklog/config/LogLevel.java" />
     </issue>
     <issue id="SimpleDateFormat">
         <ignore path="src/com/oklog/Utils.java" />
