@@ -4,28 +4,24 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 
-import com.oklog.interfaces.TaskStatusListener;
+import com.oklog.OkLog;
 
 public class WriterThread implements Runnable {
 
-	private RingQueue mRingQueue;
+	private RingBuffer mRingBuffer;
 	private File mLogFile;
 	private LogLine mLog;
-	private boolean mAppendQueue = false;
-	private TaskStatusListener mListener;
+	private RingBuffer mLogs;
 
-	public WriterThread(RingQueue ringQueue, File logFile, TaskStatusListener listener) {
-		mRingQueue = ringQueue;
+	public WriterThread(RingBuffer logs, File logFile) {
+		mLogs = logs;
 		mLogFile = logFile;
-		mAppendQueue = true;
-		mListener = listener;
 	}
-	
-	public WriterThread(LogLine log, File logFile, TaskStatusListener listener) {
-		mLog = log;
-		mLogFile = logFile;
-		mListener = listener;
-	}
+
+//	public WriterThread(LogLine log, File logFile) {
+//		mLog = log;
+//		mLogFile = logFile;
+//	}
 
 	@Override
 	public synchronized void run() {
@@ -36,18 +32,15 @@ public class WriterThread implements Runnable {
 		try {
 			String content;
 			writer = new FileWriter(mLogFile, false);
-			if(mAppendQueue) {
-				content = mRingQueue.getLogFileBody();
+			 
+			if(OkLog.getCurrentLines() > 0) {
+				content = String.format("%n%s", mLogs.getLogFileBody());
 			} else {
-				content = mLog.toString();
+				content = mLogs.getLogFileBody();
 			}
+			
 			writer.append(content);
 			writer.close();
-			if(mListener != null) {
-				mListener.onTaskComplete();
-			}
-//			long end = (System.currentTimeMillis() - start) / 1000;
-//			Log.e(WriterThread.class.getSimpleName(), "Took " + end + " Sec");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
