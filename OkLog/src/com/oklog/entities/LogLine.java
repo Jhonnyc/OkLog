@@ -17,7 +17,6 @@ public class LogLine {
 	private boolean mHasMessage = false;
 	private long mEpochTime;
 	private String mFormattedDate;
-	private String mStackTrace;
 	
 	public LogLine(LogLevel level, String msg, Throwable exception, boolean printStackTrace) {
 		mLogLevel = level;
@@ -26,9 +25,6 @@ public class LogLine {
 		if(exception != null) {
 			mException = exception;
 			mPrintStackTrace = printStackTrace;
-			if(mPrintStackTrace) {
-				mStackTrace = Utils.getFormattedStackTraceForException(mException);
-			}
 		}
 		if(msg != null && msg.trim().length() > 0) {
 			mHasMessage = true;
@@ -61,22 +57,27 @@ public class LogLine {
 		}
 	}
 	
-	@Override
-	public String toString() {
-		String line = mLogLevel.toString() + " # ";
-		line += String.format("%s #", mFormattedDate);
+	public StringKeeper getString() {
+		StringKeeper logLine = new StringKeeper();
+		logLine.append(mLogLevel.toString() + " # ");
+		logLine.append(String.format("%s #", mFormattedDate));
 		if(mHasClass) {
-			line += String.format(" %s @ %s #", mPackageName, mClassName);
+			logLine.addLine();
+			logLine.append(String.format(" %s @ %s ", mPackageName, mClassName));
 		} else {
-			line += String.format(" %s #", mTag);
+			logLine.addLine();
+			logLine.append(String.format(" %s ", mTag));
 		}
 		if(mHasMessage) {
-			line += String.format(" %s #", mLogMessage);
+			logLine.append(String.format("# %s ", mLogMessage));
 		}
 		if(mPrintStackTrace) {
-			line += String.format(" %s #", mStackTrace);
+			int leftSideMargin = logLine.length();
+			StringKeeper stackTrace = Utils.getFormattedStackTraceForException(mException, leftSideMargin + 2);
+			logLine.appendFormat("# %s ", stackTrace);
+			logLine.removeLine();
 		}
-		return line;
+		return logLine;
 	}
 
 }
