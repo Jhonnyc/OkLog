@@ -1,6 +1,8 @@
 package com.oklog.config;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum LogLevel {
@@ -13,6 +15,7 @@ public enum LogLevel {
 	// Enum Variables
 	private String mName;
 	private static final Map<String, LogLevel> mValues = new HashMap<String, LogLevel>();
+	private static List<LogLevel> mValuesList;
 	
 	private LogLevel(String value) {
 		mName = value;
@@ -24,6 +27,7 @@ public enum LogLevel {
 		mValues.put(INFO.toString().toLowerCase(), INFO);
 		mValues.put(WARNING.toString().toLowerCase(), WARNING);
 		mValues.put(ERROR.toString().toLowerCase(), ERROR);
+		mValuesList = Arrays.asList(values());
     }
 	
 	@Override
@@ -36,5 +40,9 @@ public enum LogLevel {
 			throw new NullPointerException("The name argument cannot be null");
 		}
 		return mValues.get(name.toLowerCase());
+	}
+	
+	public static List<LogLevel> asList() {
+		return mValuesList;
 	}
 }
