@@ -57,6 +57,10 @@ public class LogLine {
 		}
 	}
 	
+	public LogLevel getLevel() {
+		return mLogLevel;
+	}
+	
 	public StringKeeper getString() {
 		StringKeeper logLine = new StringKeeper();
 		logLine.append(mLogLevel.toString() + " # ");
