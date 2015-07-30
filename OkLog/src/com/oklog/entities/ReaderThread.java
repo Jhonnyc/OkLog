@@ -3,21 +3,25 @@ package com.oklog.entities;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.channels.FileChannel;
 
 import com.oklog.OkLog;
 
 public class ReaderThread implements Runnable {
 
 	private File mLogFile;
+	private File mLogFileToSend;
 	private StringKeeper mFileContent;
 	private OnAfterCrash mOnAfterCrash;
 	private boolean mHasContent;
 
-	public ReaderThread(File logFile, StringKeeper stringKeeper, OnAfterCrash onAfterCrash) {
+	public ReaderThread(File logFile, File logFileToSend, StringKeeper stringKeeper, OnAfterCrash onAfterCrash) {
 		mLogFile = logFile;
+		mLogFileToSend = logFileToSend;
 		mFileContent = stringKeeper;
 		mOnAfterCrash = onAfterCrash;
 		mHasContent = false;
@@ -27,9 +31,10 @@ public class ReaderThread implements Runnable {
 	public synchronized void run() {
 		try {
 			android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-			readLogFileContent(mLogFile);
+			//readLogFileContent(mLogFile);
+			copyFileUsingFileChannels(mLogFile, mLogFileToSend);
 			if(mHasContent && mOnAfterCrash != null) {
-				mOnAfterCrash.doAfterCrash();
+				mOnAfterCrash.doAfterCrash(mLogFileToSend);
 			}
 			PrintWriter writer = new PrintWriter(mLogFile);
 			writer.print("");
@@ -59,6 +64,19 @@ public class ReaderThread implements Runnable {
 			}
 		} catch (IOException e) {
 		    e.printStackTrace();
+		}
+	}
+	
+	private static void copyFileUsingFileChannels(File sourceFile, File destFile) throws IOException {
+		FileChannel inputChannel = null;
+		FileChannel outputChannel = null;
+		try {
+			inputChannel = new FileInputStream(sourceFile).getChannel();
+			outputChannel = new FileOutputStream(destFile).getChannel();
+			outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+		} finally {
+			inputChannel.close();
+			outputChannel.close();
 		}
 	}
 }
