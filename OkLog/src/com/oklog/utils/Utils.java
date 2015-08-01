@@ -2,8 +2,7 @@ package com.oklog.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import android.annotation.SuppressLint;
+import java.util.Locale;
 
 import com.oklog.OkLog;
 import com.oklog.entities.StringKeeper;
@@ -12,10 +11,9 @@ public class Utils {
 	
 	public static final String NEW_LINE = System.getProperty("line.separator");
 
-	@SuppressLint("SimpleDateFormat") 
 	public static String getStringDateFromEpochTime(long epochTime) {
 		Date date = new Date(epochTime);
-		SimpleDateFormat formatter = new SimpleDateFormat(OkLog.Configuration.getTimeFormat().toString());
+		SimpleDateFormat formatter = new SimpleDateFormat(OkLog.Configuration.getTimeFormat().toString(), Locale.US);
 		String formattedTime = formatter.format(date);
 		return formattedTime;
 	}
@@ -44,7 +42,8 @@ public class Utils {
 				}
 				String element = elements[elements.length - 1].toString();
 				causeLine = Utils.padLeft(element,pad + element.length());
-				stringKeeper.appendLine(causeLine);
+				stringKeeper.addLine();
+				stringKeeper.append(causeLine);
 			}
 		}
 		
